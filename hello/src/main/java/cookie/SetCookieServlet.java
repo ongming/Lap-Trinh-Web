@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Servlet implementation class SetCookieServlet
@@ -30,12 +31,22 @@ public class SetCookieServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		// response.getWriter().append("Served at: ").append(request.getContextPath());
 		// Tạo Cookie
-        Cookie userCookie = new Cookie("username", "QuangMinh");
-        userCookie.setMaxAge(60 * 60); // tồn tại 1 giờ
-        response.addCookie(userCookie);
-
-        response.setContentType("text/html;charset=UTF-8");
-        response.getWriter().println("Đã tạo Cookie: username - QuangMinh");
+		//Nhận dữ liệu từ FORM
+		String ten = request.getParameter("ten");
+		String holot = request.getParameter("holot");
+		// Create cookies for first and last names.
+		Cookie firstName = new Cookie("ten",ten);
+		Cookie lastName = new Cookie("holot",holot);
+		// Set expiry date after 24 Hrs for both the cookies.
+		firstName.setMaxAge(60 * 60 * 24);
+		lastName.setMaxAge(60 * 60 * 24);
+		// Add both the cookies in the response header.
+		response.addCookie(firstName);
+		response.addCookie(lastName);
+		
+		PrintWriter out = response.getWriter();
+		out.println("<b>First Name</b>: " + firstName.getValue() + " - <b>Last Name</b>: " +
+		lastName.getValue());
 	}
 
 	/**
