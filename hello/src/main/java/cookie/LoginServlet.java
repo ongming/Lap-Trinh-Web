@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -14,49 +15,48 @@ import java.io.PrintWriter;
  */
 @WebServlet(urlPatterns = { "/login" })
 public class LoginServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public LoginServlet() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public LoginServlet() {
+        super();
+    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		// response.getWriter().append("Served at: ").append(request.getContextPath());
-		resp.setContentType("text/html");
-		// lấy dữ liệu từ tham số của form
-		String user = req.getParameter("username");
-		String pass = req.getParameter("password");
-		if (user.equals("trung") && pass.equals("123")) {
-			Cookie cookie = new Cookie("username", user); // khởi tạo cookie
-			// thiết lập thời gian tồn tại 30s của cookie
-			cookie.setMaxAge(30);
-			// thêm cookie vào response
-			resp.addCookie(cookie);
-			// chuyển sang trang HelloServlet
-			resp.sendRedirect("/hello/helloworld");
-		} else {
-			// chuyển sang trang LoginServlet
-			resp.sendRedirect("/hello/Login.html");
-		}
-	}
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html");
+        String user = req.getParameter("username");
+        String pass = req.getParameter("password");
+        PrintWriter printWriter = resp.getWriter();
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+        if (user.equals("trung") && pass.equals("123")) {
+            // Tạo session trước khi commit response
+            HttpSession session = req.getSession();
+            session.setAttribute("name", user);
+            session.setMaxInactiveInterval(300); // 5 phút
 
+            // Tạo và thêm cookie
+            Cookie cookie = new Cookie("username", user);
+            cookie.setMaxAge(30); // 30 giây
+            resp.addCookie(cookie);
+
+            // Chuyển hướng đến trang thành công
+            resp.sendRedirect("/hello/helloworld");
+        } else {
+
+            resp.sendRedirect("/hello/Login.html");
+        }
+        printWriter.close(); // Đóng PrintWriter (tùy chọn, container có thể tự quản lý)
+    }
+
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
 }

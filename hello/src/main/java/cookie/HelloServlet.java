@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -33,6 +34,8 @@ public class HelloServlet extends HttpServlet {
 		// response.getWriter().append("Served at: ").append(request.getContextPath());
 		resp.setContentType("text/html");
 		PrintWriter printWriter = resp.getWriter();
+		HttpSession session = req.getSession(false);
+		String nameFromSession = (String) session.getAttribute("name");
 		String name = "";
 		// Nhận cookie
 		Cookie[] cookie = req.getCookies();
@@ -46,7 +49,9 @@ public class HelloServlet extends HttpServlet {
 			resp.sendRedirect("/HelloServlet/Login.html");
 		}
 		// hiển thị lên trang bằng đối tượng PrintWriter()
-		printWriter.println("Xin chao " + name);
+		printWriter.println("Xin chao " + name + "<br>");
+		printWriter.println("session cua ban la: " + nameFromSession);
+
 
 	}
 
