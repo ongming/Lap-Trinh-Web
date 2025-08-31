@@ -76,21 +76,43 @@ public class UserDaoImpl implements UserDao {
 		}
 		return duplicate;
 	}
+
 	public boolean checkExistUsername(String username) {
 		boolean duplicate = false;
 		String query = "select * from [User] where username = ?";
 		try {
-		conn = new DBConnection().getConnection();
-		ps = conn.prepareStatement(query);
-		ps.setString(1, username);
-		rs = ps.executeQuery();
-		if (rs.next()) {
-		duplicate = true;
+			conn = new DBConnection().getConnection();
+			ps = conn.prepareStatement(query);
+			ps.setString(1, username);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				duplicate = true;
+			}
+			ps.close();
+			conn.close();
+		} catch (Exception ex) {
 		}
-		ps.close();
-		conn.close();
-		} catch (Exception ex) {}
 		return duplicate;
+	}
+
+	@Override
+	public boolean checkExistPhone(String phone) {
+		boolean duplicate = false;
+		String query = "select * from [User] where phone = ?";
+		try {
+			conn = new DBConnection().getConnection();
+			ps = conn.prepareStatement(query);
+			ps.setString(1, phone);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				duplicate = true;
+			}
+			ps.close();
+			conn.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
+		return duplicate;
+	}
 
 }

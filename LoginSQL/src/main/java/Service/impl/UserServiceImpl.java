@@ -22,13 +22,13 @@ public class UserServiceImpl implements UserService {
 		return userDao.get(username);
 	}
 
-	public boolean register(String username, String password, String email, String fullname, String phone) {
+	public boolean register(int id, String username, String password, String email, String fullname, String phone) {
 		if (userDao.checkExistUsername(username)) {
 			return false;
 		}
 		long millis = System.currentTimeMillis();
 		java.sql.Date date = new java.sql.Date(millis);
-		userDao.insert(new User(email, username, fullname, password, null, 5, phone, date));
+		userDao.insert(new User(id, email, username, fullname, password, null, 0, phone, date));
 		return true;
 	}
 
@@ -40,13 +40,14 @@ public class UserServiceImpl implements UserService {
 		return userDao.checkExistUsername(username);
 	}
 
-	@Override
+
 	public boolean checkExistPhone(String phone) {
 		return userDao.checkExistPhone(phone);
 	}
 
-	@Override
+
 	public void insert(User user) {
 		userDao.insert(user);
 	}
+
 }
