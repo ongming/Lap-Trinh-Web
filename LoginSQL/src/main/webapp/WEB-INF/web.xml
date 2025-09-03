@@ -45,4 +45,24 @@
     <servlet-name>user</servlet-name>
     <url-pattern>/user</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>LogoutController</display-name>
+    <servlet-name>LogoutController</servlet-name>
+    <servlet-class>Controller.LogoutController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LogoutController</servlet-name>
+    <url-pattern>/LogoutController</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Resetpass</display-name>
+    <servlet-name>Resetpass</servlet-name>
+    <servlet-class>Controller.Resetpass</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Resetpass</servlet-name>
+    <url-pattern>/Resetpass</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -40,7 +40,7 @@ public class LoginController extends HttpServlet {
 		}
 
 		// Nếu chưa login (cả session và cookie đều không có) thì forward về login.jsp
-		req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
+		req.getRequestDispatcher("/Login.jsp").forward(req, resp);
 	}
 
 	@Override

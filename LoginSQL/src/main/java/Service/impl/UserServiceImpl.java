@@ -32,6 +32,20 @@ public class UserServiceImpl implements UserService {
 		return true;
 	}
 
+	public boolean resetPass(String username, String newpass, String email) {
+		if(userDao.checkMatch(username, email)) {
+			userDao.update(username, email, newpass);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void update(String username, String email) {
+		// TODO Auto-generated method stub
+
+	}
+
 	public boolean checkExistEmail(String email) {
 		return userDao.checkExistEmail(email);
 	}
@@ -40,14 +54,25 @@ public class UserServiceImpl implements UserService {
 		return userDao.checkExistUsername(username);
 	}
 
-
 	public boolean checkExistPhone(String phone) {
 		return userDao.checkExistPhone(phone);
 	}
 
-
 	public void insert(User user) {
 		userDao.insert(user);
+	}
+
+	@Override
+	public boolean checkMatch(String username, String email) {
+		return userDao.checkMatch(username, email);
+	}
+
+	@Override
+	public boolean checkMatchPass(String passWord, String confirmPassWord) {
+		if (passWord.equals(confirmPassWord)) {
+			return true;
+		}
+		return false;
 	}
 
 }

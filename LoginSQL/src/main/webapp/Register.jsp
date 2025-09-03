@@ -74,7 +74,7 @@ body {
         <p class="alert">${alert}</p>
 
         <div class="login-link">
-            Nếu bạn đã có tài khoản? <a href="${pageContext.request.contextPath}/login.jsp">Đăng nhập</a>
+            Nếu bạn đã có tài khoản? <a href="${pageContext.request.contextPath}/Login.jsp">Đăng nhập</a>
         </div>
     </div>
 </body>

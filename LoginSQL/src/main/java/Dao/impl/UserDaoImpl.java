@@ -59,9 +59,23 @@ public class UserDaoImpl implements UserDao {
 		}
 	}
 
+	public void update(String username, String email, String passWord) {
+		String sql = "UPDATE [Users] SET passWord = ? WHERE userName = ? AND email = ?";
+		try {
+			conn = new DBConnection().getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1,passWord);
+			ps.setString(2,username);
+			ps.setString(3, email);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}		
+	}
+
 	public boolean checkExistEmail(String email) {
 		boolean duplicate = false;
-		String query = "select * from [user] where email = ?";
+		String query = "select * from [Users] where email = ?";
 		try {
 			conn = new DBConnection().getConnection();
 			ps = conn.prepareStatement(query);
@@ -79,7 +93,7 @@ public class UserDaoImpl implements UserDao {
 
 	public boolean checkExistUsername(String username) {
 		boolean duplicate = false;
-		String query = "select * from [User] where username = ?";
+		String query = "select * from [Users] where username = ?";
 		try {
 			conn = new DBConnection().getConnection();
 			ps = conn.prepareStatement(query);
@@ -98,11 +112,32 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public boolean checkExistPhone(String phone) {
 		boolean duplicate = false;
-		String query = "select * from [User] where phone = ?";
+		String query = "select * from [Users] where phone = ?";
 		try {
 			conn = new DBConnection().getConnection();
 			ps = conn.prepareStatement(query);
 			ps.setString(1, phone);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				duplicate = true;
+			}
+			ps.close();
+			conn.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return duplicate;
+	}
+
+	@Override
+	public boolean checkMatch(String username, String email) {
+		boolean duplicate = false;
+		String query = "SELECT * FROM [User] WHERE username = ? AND email = ?";
+		try {
+			conn = new DBConnection().getConnection();
+			ps = conn.prepareStatement(query);
+			ps.setString(1, username);
+			ps.setString(2, email);
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				duplicate = true;
