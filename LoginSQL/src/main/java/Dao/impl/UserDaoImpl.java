@@ -67,6 +67,7 @@ public class UserDaoImpl implements UserDao {
 			ps.setString(1,passWord);
 			ps.setString(2,username);
 			ps.setString(3, email);
+			ps.executeUpdate();
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -93,7 +94,7 @@ public class UserDaoImpl implements UserDao {
 
 	public boolean checkExistUsername(String username) {
 		boolean duplicate = false;
-		String query = "select * from [Users] where username = ?";
+		String query = "select * from [Users] where userName = ?";
 		try {
 			conn = new DBConnection().getConnection();
 			ps = conn.prepareStatement(query);
@@ -124,30 +125,30 @@ public class UserDaoImpl implements UserDao {
 			ps.close();
 			conn.close();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();		
 		}
 		return duplicate;
 	}
 
 	@Override
-	public boolean checkMatch(String username, String email) {
-		boolean duplicate = false;
-		String query = "SELECT * FROM [User] WHERE username = ? AND email = ?";
-		try {
-			conn = new DBConnection().getConnection();
-			ps = conn.prepareStatement(query);
-			ps.setString(1, username);
-			ps.setString(2, email);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				duplicate = true;
+		public boolean checkMatch(String username, String email) {
+			boolean duplicate = false;
+			String query = "SELECT * FROM [Users] WHERE userName = ? AND email = ?";
+			try {
+				conn = new DBConnection().getConnection();
+				ps = conn.prepareStatement(query);
+				ps.setString(1, username);
+				ps.setString(2, email);
+				rs = ps.executeQuery();
+				if (rs.next()) {
+					duplicate = true;
+				}
+				ps.close();
+				conn.close();
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
-			ps.close();
-			conn.close();
-		} catch (Exception ex) {
-			ex.printStackTrace();
+			return duplicate;
 		}
-		return duplicate;
-	}
 
 }

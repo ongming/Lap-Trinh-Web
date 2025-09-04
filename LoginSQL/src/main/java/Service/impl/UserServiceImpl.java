@@ -40,11 +40,6 @@ public class UserServiceImpl implements UserService {
 		return false;
 	}
 
-	@Override
-	public void update(String username, String email) {
-		// TODO Auto-generated method stub
-
-	}
 
 	public boolean checkExistEmail(String email) {
 		return userDao.checkExistEmail(email);
@@ -73,6 +68,12 @@ public class UserServiceImpl implements UserService {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void update(String username, String email) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
