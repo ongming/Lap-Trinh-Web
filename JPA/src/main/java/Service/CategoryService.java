@@ -9,7 +9,8 @@ public interface CategoryService {
 
     List<Category> getAllCategories();
     List<Category> getCategoriesByUser(User user);
+    public Category findByIdAndUser(int id);
     void createCategory(Category c, User user);
-    void updateCategory(Category c, User user);
-    void deleteCategory(int id, User user);
+    void updateCategory(Category c);
+    void deleteCategory(int id, User user,String uploadDir);
 }

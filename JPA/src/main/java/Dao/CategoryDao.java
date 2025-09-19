@@ -10,11 +10,13 @@ public interface CategoryDao {
 
 	List<Category> findByUser(User user);
 
+	public Category findByIdAndUser(int id);
+
 	void insert(Category c);
 
 	void update(Category c);
 
-	void delete(int id);
+	void delete(int id, String uploadDir);
 
 	Category findById(int id);
 }

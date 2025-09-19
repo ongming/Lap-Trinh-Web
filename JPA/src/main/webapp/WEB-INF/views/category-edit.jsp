@@ -114,9 +114,14 @@ img {
 
 	<div style="width: 80%; margin: 0 auto;">
 		<div style="width: 80%; margin: 0 auto; display: flex; gap: 20px;">
-			<form action="${pageContext.request.contextPath}/category/create">
-				<button type="submit" class="edit-btn">
-					<i class="fa fa-plus"></i> Thêm
+			<form>
+				<button type="button" class="edit-btn"
+					onclick="
+				            const form = document.getElementById('setting');
+				            form.style.display='block';
+				            form.scrollIntoView({ behavior: 'smooth' });			            
+				        	">
+					<i class="fa fa-plus"></i> Thêm Category
 				</button>
 			</form>
 		</div>
@@ -134,10 +139,32 @@ img {
 						src="${pageContext.request.contextPath}/Uploads/${cat.icon}"
 						class="icon-img" alt="icon" width="100" height="100"></td>
 					<td>
-						<form action="${pageContext.request.contextPath}/category/setting"
-							method="get" style="display: inline-block;">
-							<input type="hidden" name="id" value="${cat.cate_id}" />
-							<button type="submit" class="edit-btn">
+						<form method="get" style="display: inline-block;">
+							<button type="button" class="edit-btn" data-id="${cat.cate_id}"
+								data-name="${cat.cate_name}" data-icon="${cat.icon}"
+								onclick="
+							            const form=document.getElementById('setting');
+							            form.style.display='block';
+							            form.scrollIntoView({behavior:'smooth'});
+							
+							            form.action='${pageContext.request.contextPath}/category/setting';
+							            form.querySelector('input[name=cate_name]').value=this.dataset.name;
+							
+							            let idInput=form.querySelector('input[name=cate_id]');
+							            if(!idInput){
+							                idInput=document.createElement('input');
+							                idInput.type='hidden';
+							                idInput.name='cate_id';
+							                form.appendChild(idInput);
+							            }
+							            idInput.value=this.dataset.id;
+							
+							            if(this.dataset.icon){
+							                const preview=document.getElementById('preview');
+							                preview.src='${pageContext.request.contextPath}/Uploads/'+this.dataset.icon;
+							                preview.style.display='block';
+							            }
+							        ">
 								<i class="fa fa-pen"></i> Sửa
 							</button>
 						</form>
@@ -154,43 +181,42 @@ img {
 				</tr>
 			</c:forEach>
 		</table>
-		<h3>Chỉnh,Sửa thông tin Category</h3>
-		<form>
+
+		<form id="setting"
+			action="${pageContext.request.contextPath}/category/create"
+			method="post" enctype="multipart/form-data" style="display: none;">
+			<h3>Chỉnh, Sửa thông tin Category</h3>
+			<div
+				style="margin-top: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 50px;">
+				<img id="preview" src="#" alt="Preview"
+					style="display: none; width: 250px; height: auto; object-fit: contain; border-radius: 5px;">
+			</div>
+
 			<input type="text" name="cate_name" placeholder="Tên Category"
 				required style="padding: 8px; margin-right: 10px;">
 
 			<!-- input file ẩn -->
 			<input type="file" name="icon" id="fileInput" accept="image/*"
-				required style="display: none;" onchange="previewImage(event)">
+				required style="display: none;"
+				onchange="
+               const preview = document.getElementById('preview');
+               preview.src = window.URL.createObjectURL(this.files[0]);
+               preview.style.display='block';
+           ">
 
 			<!-- nút chọn ảnh -->
 			<button type="button" class="edit-btn"
 				onclick="document.getElementById('fileInput').click();">
 				<i class="fa fa-upload"></i> Chọn ảnh
 			</button>
-
-			<!-- preview ảnh -->
-			<div style="margin-top: 10px;">
-				<img id="preview" src="#" alt="Preview"
-					style="display: none; width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
+			<br>
+			<div style="margin-top: 25px;">
+				<button type="submit" class="edit-btn">
+					<i class="fa fa-save"></i> Lưu
+				</button>
 			</div>
+			<!-- preview ảnh -->
 		</form>
-
-		<script>
-			function previewImage(event) {
-				const preview = document.getElementById('preview');
-				const file = event.target.files[0];
-				if (file) {
-					const reader = new FileReader();
-					reader.onload = function(e) {
-						preview.src = e.target.result;
-						preview.style.display = 'block';
-					}
-					reader.readAsDataURL(file);
-				}
-			}
-		</script>
-
 	</div>
 
 </body>
