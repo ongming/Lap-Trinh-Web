@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+  <!-- decorator mặc định cho toàn site -->
+  <mapping path="/*" decorator="/WEB-INF/decorators/main.jsp"/>
+  <!-- có thể gắn decorator riêng theo khu vực -->
+  <mapping path="/admin/*" decorator="/WEB-INF/decorators/admin.jsp"/>
+  <mapping path="/manager/*" decorator="/WEB-INF/decorators/manager.jsp"/>
+
+  <!-- loại trừ tài nguyên tĩnh / upload (tránh “bọc” HTML vào ảnh/CSS/JS) -->
+  <mapping path="/assets/*" exclude="true"/>
+  <mapping path="/css/*"    exclude="true"/>
+  <mapping path="/js/*"     exclude="true"/>
+  <mapping path="/Uploads/*" exclude="true"/>
+</sitemesh>
+	
