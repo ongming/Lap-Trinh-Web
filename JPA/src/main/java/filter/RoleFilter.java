@@ -36,7 +36,27 @@ public class RoleFilter implements Filter {
             chain.doFilter(req, res);
             return;
         }
+        
+        String path = ((HttpServletRequest) req).getRequestURI().substring(((HttpServletRequest) req).getContextPath().length());
 
+        boolean isStatic = path.startsWith("/css/") || path.startsWith("/js/") || path.startsWith("/assets/") || path.startsWith("/Uploads/");
+        boolean isAuthFree = path.equals("/login") || path.startsWith("/auth/");
+
+        if (isStatic || isAuthFree) { chain.doFilter(req, res); return; }
+
+        User user = (User) ((HttpServletRequest) req).getSession().getAttribute("user");
+        if (user == null) {
+            ((HttpServletResponse) res).sendRedirect(((HttpServletRequest) req).getContextPath() + "/login");
+            return;
+        }
+
+        // Cho phép user tự cập nhật profile của chính mình
+        if (path.equals("/profile")) { chain.doFilter(req, res); return; }
+
+        // ... kiểm tra role cho /admin/*, /manager/* như bạn đang có
+        chain.doFilter(req, res);
+
+        
         HttpSession session = request.getSession(false);
         User user = (session != null) ? (User) session.getAttribute("user") : null;
 
