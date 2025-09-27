@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <h1>List Category</h1>
+    <a th:href="@{/admin/categories/add}">Add Category</a>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Icon</th>
+            <th>Action</th>
+        </tr>
+        <tr th:each="category : ${categories}">
+            <td th:text="${category.categoryId}"></td>
+            <td th:text="${category.categoryName}"></td>
+            <td><img th:src="@{/upload-dir/{icon}(icon=${category.icon})}" width="50"/></td>
+            <td>
+                <a th:href="@{/admin/categories/edit/{id}(id=${category.categoryId})}">Edit</a>
+                <a th:href="@{/admin/categories/delete/{id}(id=${category.categoryId})}">Delete</a>
+            </td>
+        </tr>
+    </table>
+
+    <!-- AJAX render Category từ API -->
+    <h2>Category from API (AJAX)</h2>
+    <table id="categoryTable">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Icon</th>
+        </tr>
+    </table>
+
+    <!-- AJAX render Product từ API -->
+    <h2>Product from API (AJAX)</h2>
+    <table id="productTable">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+    </table>
+</div>
+</html>
